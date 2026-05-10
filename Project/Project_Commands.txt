@@ -1,0 +1,408 @@
+Command---R_HQ
+
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R_HQ
+R_HQ(config)#no ip domain-lookup
+R_HQ(config)#interface FastEthernet0/0
+R_HQ(config-if)#ip address 1.0.0.1 255.255.248.0
+R_HQ(config-if)#no shutdown
+
+R_HQ(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+R_HQ(config-if)#exit
+R_HQ(config)#interface Serial0/0/0
+R_HQ(config-if)#ip address 1.0.24.145 255.255.255.252
+R_HQ(config-if)#clock rate 64000
+R_HQ(config-if)#no shutdown
+
+%LINK-5-CHANGED: Interface Serial0/0/0, changed state to down
+R_HQ(config-if)#exit
+
+R_HQ(config)#interface Serial0/0/1
+R_HQ(config-if)#ip address 1.0.24.149 255.255.255.252
+R_HQ(config-if)#clock rate 64000
+R_HQ(config-if)#no shutdown
+
+%LINK-5-CHANGED: Interface Serial0/0/1, changed state to down
+R_HQ(config-if)#exit
+R_HQ(config)#ip route 1.0.24.0 255.255.255.128 1.0.24.150
+R_HQ(config)#ip route 1.0.8.0 255.255.252.0 1.0.24.146
+R_HQ(config)#ip route 1.0.12.0 255.255.252.0 1.0.24.146
+R_HQ(config)#ip route 1.0.16.0 255.255.254.0 1.0.24.146
+R_HQ(config)#ip route 1.0.18.0 255.255.254.0 1.0.24.146
+R_HQ(config)#ip route 1.0.20.0 255.255.254.0 1.0.24.146
+R_HQ(config)#ip route 1.0.22.0 255.255.254.0 1.0.24.146
+R_HQ(config)#ip route 1.0.24.128 255.255.255.240 1.0.24.146
+R_HQ(config)#end 
+R_HQ#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R_HQ#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+
+Command --- R_SimCore
+
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R_SimCore
+R_SimCore(config)#no ip domain-lookup
+R_SimCore(config)#interface FastEthernet0/0
+R_SimCore(config-if)#ip address 1.0.8.1 255.255.252.0
+R_SimCore(config-if)#no shutdown
+
+R_SimCore(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+exit
+R_SimCore(config)#interface FastEthernet0/1
+R_SimCore(config-if)#ip address 1.0.24.129 255.255.255.240
+R_SimCore(config-if)#no shutdown
+
+R_SimCore(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+exit
+R_SimCore(config)#interface Serial0/0/0
+R_SimCore(config-if)#ip address 1.0.24.146 255.255.255.252
+R_SimCore(config-if)#no shutdown
+
+R_SimCore(config-if)#
+%LINK-5-CHANGED: Interface Serial0/0/0, changed state to up
+exit
+R_SimCore(config)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/0/0, changed state to up
+
+R_SimCore(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.145
+R_SimCore(config)#router rip
+R_SimCore(config-router)#version 2
+R_SimCore(config-router)#no auto-summary
+R_SimCore(config-router)#network 1.0.0.0
+R_SimCore(config-router)#passive-interface FastEthernet0/0
+R_SimCore(config-router)#passive-interface Serial0/0/0
+R_SimCore(config-router)#exit
+R_SimCore(config)#end
+R_SimCore#
+%SYS-5-CONFIG_I: Configured from console by console
+write memory
+Building configuration...
+[OK]
+R_SimCore#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+Command---R_SimSandbox
+
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R_SimSandbox
+R_SimSandbox(config)#no ip domain-lookup
+R_SimSandbox(config)#interface FastEthernet0/0
+R_SimSandbox(config-if)#ip address 1.0.12.1 255.255.252.0
+R_SimSandbox(config-if)#ip helper-address 1.0.8.2
+R_SimSandbox(config-if)#no shutdown
+
+R_SimSandbox(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+exit
+R_SimSandbox(config)#interface FastEthernet0/1
+R_SimSandbox(config-if)#ip address 1.0.24.130 255.255.255.240
+R_SimSandbox(config-if)#no shutdown
+
+R_SimSandbox(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+exit
+R_SimSandbox(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.129
+R_SimSandbox(config)#router rip
+R_SimSandbox(config-router)#version 2
+R_SimSandbox(config-router)#no auto-summary
+R_SimSandbox(config-router)#network 1.0.0.0
+R_SimSandbox(config-router)#passive-interface FastEthernet0/0
+R_SimSandbox(config-router)#exit
+R_SimSandbox(config)#end
+R_SimSandbox#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R_SimSandbox#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R_SimSandbox#
+
+Command---R_ML
+
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R_ML
+R_ML(config)#no ip domain-lookup
+R_ML(config)#interface FastEthernet0/0
+R_ML(config-if)#ip address 1.0.16.1 255.255.254.0
+Bad mask 0xFFFFF400 for address 1.0.16.1
+R_ML(config-if)#no shutdown
+
+R_ML(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+exit
+R_ML(config)#interface FastEthernet0/1
+R_ML(config-if)#ip address 1.0.24.131 255.255.255.240
+R_ML(config-if)#no shutdown
+
+R_ML(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+exit
+R_ML(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.129
+R_ML(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.130 84
+R_ML(config)#ip dhcp excluded-address 1.0.16.1 1.0.16.10
+R_ML(config)#ip dhcp pool ML_Engine_Pool
+R_ML(dhcp-config)#network 1.0.16.0 255.255.254.0
+R_ML(dhcp-config)#default-router 1.0.16.1
+R_ML(dhcp-config)#dns-server 1.0.0.2
+R_ML(dhcp-config)#exit
+R_ML(config)#router rip
+R_ML(config-router)#version 2
+R_ML(config-router)#no auto-summary
+R_ML(config-router)#network 1.0.0.0
+R_ML(config-router)#passive-interface FastEthernet0/0
+R_ML(config-router)#exit
+R_ML(config)#end 
+R_ML#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R_ML#write memory 
+Building configuration...
+[OK]
+R_ML#
+R_ML#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+
+Command---R_DP
+
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R_DP
+R_DP(config)#no ip domain-lookup
+R_DP(config)#interface FastEthernet0/0
+R_DP(config-if)#ip address 1.0.18.1 255.255.254.0
+R_DP(config-if)#no shutdown
+
+R_DP(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+exit
+R_DP(config)#interface FastEthernet0/1
+R_DP(config-if)#ip address 1.0.24.132 255.255.255.240
+R_DP(config-if)#no shutdown
+
+R_DP(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+exit 
+R_DP(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.129
+R_DP(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.129
+R_DP(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.130 84
+R_DP(config)#ip dhcp excluded-address 1.0.18.1 1.0.18.10
+R_DP(config)#ip dhcp pool DP_Cell_Pool
+R_DP(dhcp-config)#network 1.0.18.0 255.255.254.0
+R_DP(dhcp-config)#default-router 1.0.18.1
+R_DP(dhcp-config)#dns-server 1.0.0.2
+R_DP(dhcp-config)#exit
+R_DP(config)#router rip
+R_DP(config-router)#version 2
+R_DP(config-router)#no auto-summary
+R_DP(config-router)#network 1.0.0.0
+R_DP(config-router)#passive-interface FastEthernet0/0
+R_DP(config-router)#exit 
+R_DP(config)#end
+R_DP#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R_DP#write memory
+Building configuration...
+[OK]
+R_DP#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R_DP#
+
+
+Command---R_Diag
+
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R_Diag
+R_Diag(config)#no ip domain-lookup
+R_Diag(config)#interface FastEthernet0/0
+R_Diag(config-if)#ip address 1.0.20.1 255.255.254.0
+R_Diag(config-if)#no shutdown
+
+R_Diag(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+exit 
+R_Diag(config)#interface FastEthernet0/1
+R_Diag(config-if)#ip address 1.0.24.133 255.255.255.240
+R_Diag(config-if)#no shutdown
+
+R_Diag(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+
+R_Diag(config-if)#exit
+R_Diag(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.129
+R_Diag(config)#ip dhcp excluded-address 1.0.20.1 1.0.20.10
+R_Diag(config)#ip dhcp pool Diag_Bay_Pool
+R_Diag(dhcp-config)#network 1.0.20.0 255.255.254.0
+R_Diag(dhcp-config)#default-router 1.0.20.1
+R_Diag(dhcp-config)#dns-server 1.0.0.2
+R_Diag(dhcp-config)#exit
+R_Diag(config)#router rip
+R_Diag(config-router)#version 2
+R_Diag(config-router)#no auto-summary
+R_Diag(config-router)#network 1.0.0.0
+R_Diag(config-router)#passive-interface FastEthernet0/0
+R_Diag(config-router)#exit
+R_Diag(config)#
+R_Diag(config)#end 
+R_Diag#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R_Diag#write memory
+Building configuration...
+[OK]
+R_Diag#
+R_Diag#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R_Diag#
+R_Diag#
+
+Command---R_Repair
+
+Router>
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R_Repair
+R_Repair(config)#no ip domain-lookup
+R_Repair(config)#interface FastEthernet0/0
+R_Repair(config-if)#ip address 1.0.22.1 255.255.254.0
+R_Repair(config-if)#no shutdown
+
+R_Repair(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+R_Repair(config-if)#exit
+R_Repair(config)#interface FastEthernet0/1
+R_Repair(config-if)#ip address 1.0.24.134 255.255.255.240
+R_Repair(config-if)#no shutdown
+
+R_Repair(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/1, changed state to up
+
+R_Repair(config-if)#exit
+R_Repair(config)#ip route 1.0.0.0 255.255.248.0 1.0.24.129
+R_Repair(config)#ip dhcp excluded-address 1.0.22.1 1.0.22.10
+R_Repair(config)#ip dhcp pool Repair_Unit_Pool
+R_Repair(dhcp-config)#network 1.0.22.0 255.255.254.0
+R_Repair(dhcp-config)#default-router 1.0.22.1
+R_Repair(dhcp-config)#dns-server 1.0.0.2
+R_Repair(dhcp-config)#exit
+R_Repair(config)#
+R_Repair(config)#router rip
+R_Repair(config-router)#version 2 
+R_Repair(config-router)#no auto-summary
+R_Repair(config-router)#network 1.0.0.0
+R_Repair(config-router)#passive-interface FastEthernet0/0
+R_Repair(config-router)#exit
+R_Repair(config)#
+R_Repair(config)#end
+R_Repair#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R_Repair#write memory
+Building configuration...
+[OK]
+R_Repair#
+R_Repair#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R_Repair#
+
+
+Command---R_Emergency
+
+Router>
+Router>en
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#
+Router(config)#hostname R_Emergency
+R_Emergency(config)#no ip domain-lookup
+R_Emergency(config)#interface FastEthernet0/0
+R_Emergency(config-if)#ip address 1.0.24.1 255.255.255.128
+R_Emergency(config-if)#no shutdown
+
+R_Emergency(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+R_Emergency(config-if)#exit
+R_Emergency(config)#interface Serial0/0/0
+R_Emergency(config-if)#ip address 1.0.24.150 255.255.255.252
+R_Emergency(config-if)#no shutdown
+
+R_Emergency(config-if)#
+%LINK-5-CHANGED: Interface Serial0/0/0, changed state to up
+exit
+R_Emergency(config)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/0/0, changed state to up
+
+R_Emergency(config)#ip route 1.0.0.0 255.255.248.0 Serial0/0/0
+%Default route without gateway, if not a point-to-point interface, may impact performance
+R_Emergency(config)#end
+R_Emergency#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R_Emergency#copy running-config startup-config
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R_Emergency#
+R_Emergency#
